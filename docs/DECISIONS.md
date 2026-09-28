@@ -20,6 +20,18 @@ Every judgment call made while building, so nothing gets silently assumed into s
 - **Dashboard: Next.js 16, app router.** The API token is server-side only (`SIGNAL_API_TOKEN`, no `NEXT_PUBLIC_`), and pages call the API from server components. I verified the token doesn't appear in the rendered HTML. Google Fonts were removed so builds work offline.
 - **Mobile: Expo SDK 57** with pnpm isolated installs (supported from SDK 54). Metro resolves `@signal/core/shared` subpath exports with TS source, verified with `expo export`. The template's Expo MIT license file was removed because this is a private repo.
 
+## UI (from the design canvas)
+
+- **The design system lives in signal-core as `@signal/core/ui`:** tokens (JSON, CSS, the React Native theme), `signal.css`, enum labels and icons, formatters, the incident view-model, and sample data. The canvas's handoff suggested separate `tokens`, `ui-core`, `ui-web` and `ui-mobile` packages; with the six-repo split, the shared, headless parts go in core and each app draws its own components.
+- **The view-model is the future API contract.** Verdict, checks with sources, why-not-higher, and the two consequence lines are data fields (`IncidentDetail`, `Decision`), not UI copy, as the handoff asks. The API will return these shapes.
+- **Sample-data swaps to fit the MVP allowlist:** `deploy.rollback_last` becomes `cloudrun.rollback`, `cloudrun.restart_service` becomes `cloudrun.restart`, `cache.clear_key` becomes `cache.invalidate`, and the "set minimum instances" proposal becomes a restart. Rollback is shown as "Always asks first" because medium blast radius can never auto-execute under the gate.
+- **Honest demo:** every screen shows a **Demo data** tag while it runs on sample data. On the web, the run mode and auto-execute flag come from the real signal-api when it is reachable.
+- **The run mode is read-only in the UI.** The canvas lets admins switch Dry run / Live from Settings. Safety rule 4 says real execution needs `DRY_RUN=false` explicitly, so the mode stays an env setting and the UI explains that.
+- **The web kill switch and theme use cookies for now** (demo only). The kill switch becomes an audited API call during integration.
+- **Web:** Next 16 with Geist from the `geist` package (self-hosted, builds offline), `@phosphor-icons/react`, and native `<dialog>` for confirm and reject: focus starts on Cancel, and Enter doesn't submit. Tailwind was removed; the design CSS is the whole styling layer.
+- **Mobile:** Expo Router, `@expo-google-fonts/geist`, `phosphor-react-native`, and `expo-haptics` on primary actions and a successful hold. Packages were installed with `expo install` in offline mode, so versions match the SDK 57 bundle.
+- **Fixed two bugs in the design CSS on real pages:** `.sg-root a` overrode the text colour of link-buttons, and `.sg-dialog { display: flex }` made closed dialogs visible. Both are fixed in the dashboard's `globals.css` without touching the generated CSS.
+
 ## Workspace (Phase 0)
 
 - **Pinned stable majors, not the newest.** TypeScript 5.9 (not 7.x native), Prisma 6.19 (latest tag is an 8.0 RC), zod 3.25, vitest 3.2. These are well-known and well-supported by the rest of the toolchain (typescript-eslint, Next.js). Upgrade deliberately later.

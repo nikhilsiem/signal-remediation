@@ -29,6 +29,6 @@ Still to come: `TRUST.md` (plain-language "how Signal decides"), `RUNBOOK.md` (k
 | 5 | Confidence scorer + gate | signal-core | ✅ |
 | 6 | Actions, verification, circuit breaker | signal-core, signal-worker | ⏳ |
 | 7 | Slack, Expo push, approval API | signal-core, signal-api | ⏳ |
-| 8 | Dashboard | signal-dashboard | ⏳ |
-| 9 | Mobile | signal-mobile | ⏳ |
+| 8 | Dashboard: every screen from the design, on sample data | signal-dashboard | ✅ UI · ⏳ data |
+| 9 | Mobile: every screen from the design, on sample data | signal-mobile | ✅ UI · ⏳ data, push |
 | 10 | Docs + demo | signal-remediation | ⏳ |

@@ -17,6 +17,7 @@ Signal is split across six private repositories under `nikhilsiem`. This replace
 |---|---|---|
 | `@signal/core/shared` | zod contracts, env validation | everyone |
 | `@signal/core/db` | Prisma client, setting keys, seed | api, worker |
+| `@signal/core/ui` | Design tokens and CSS, React Native theme, labels, formatters, incident view-model, sample data | dashboard, mobile |
 | `@signal/core/agent` | pattern match, confidence scorer, gate, and (Phase 4) LLM adapters, redaction, diagnosis | worker |
 | `@signal/core/connectors` | Sentry + GCP: verify, normalize, fetchContext (Phase 2) | api (verify/normalize), worker (fetchContext) |
 | `@signal/core/actions` | action registry + executors (Phase 6) | worker, api (allowlist view) |
@@ -30,7 +31,7 @@ Signal is split across six private repositories under `nikhilsiem`. This replace
 2. In each app that needs the change, bump the pin to the new commit: `"@signal/core": "github:nikhilsiem/signal-core#<full-sha>"`, then run `pnpm install`.
 3. Apps pin an exact commit (or tag), never a branch, so a core change can't silently break a deployed app.
 
-Currently pinned everywhere: `254c1f2291f318c06753251d96db1d8e94606390` (core v0.1.1). Tags like `v0.1.1` are fine to use too. They're just more readable aliases for a commit; create them from GitHub → Releases.
+Current pins: dashboard and mobile use `e7e72636…` (core 0.2.0, with `/ui`); api and worker use `254c1f22…` (0.1.1) and move up when they next need a core change. Tags like `v0.1.1` are fine to use too. They're just more readable aliases for a commit; create them from GitHub → Releases.
 
 The trade-off, accepted deliberately: one contract change is now 1 + N PRs instead of one. Keep contracts additive where possible (new optional fields) so apps can upgrade independently.
 
