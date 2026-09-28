@@ -20,9 +20,10 @@ Still to come: `TRUST.md` (plain-language "how Signal decides"), `RUNBOOK.md` (k
 
 | Phase | What | Repo | State |
 |---|---|---|---|
-| 0 | Tooling, env validation, lint guardrails | all | ✅ core |
+| 0 | Tooling, env validation, lint guardrails, CI | all | ✅ all six repos scaffolded |
 | 1 | Contracts + Prisma schema | signal-core | ✅ |
-| 2 | Connectors + fixtures + simulator | signal-core, signal-api | ⏳ |
+| — | App skeletons: API (health, auth, raw body), worker (queues), dashboard (safety banner), mobile (shell) | api, worker, dashboard, mobile | ✅ |
+| 2 | Connectors + fixtures + simulator | signal-core, signal-api | ⏳ next |
 | 3 | Worker pipeline | signal-worker | ⏳ |
 | 4 | Agent: LLM, redaction, diagnosis | signal-core | ⏳ |
 | 5 | Confidence scorer + gate | signal-core | ✅ |

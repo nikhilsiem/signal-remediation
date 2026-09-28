@@ -26,9 +26,11 @@ Signal is split across six private repositories under `nikhilsiem`. This replace
 
 ## How versions move
 
-1. Change a contract in **signal-core**, run its tests, then tag it: `git tag v0.2.0 && git push --tags`.
-2. Bump the dependency in each app that needs it: `"@signal/core": "github:nikhilsiem/signal-core#v0.2.0"`.
-3. Apps pin tags, never branches, so a core change can't silently break a deployed app.
+1. Change a contract in **signal-core**, run `pnpm check`, then push to `main`.
+2. In each app that needs the change, bump the pin to the new commit: `"@signal/core": "github:nikhilsiem/signal-core#<full-sha>"`, then run `pnpm install`.
+3. Apps pin an exact commit (or tag), never a branch, so a core change can't silently break a deployed app.
+
+Currently pinned everywhere: `254c1f2291f318c06753251d96db1d8e94606390` (core v0.1.1). Tags like `v0.1.1` are fine to use too. They're just more readable aliases for a commit; create them from GitHub → Releases.
 
 The trade-off, accepted deliberately: one contract change is now 1 + N PRs instead of one. Keep contracts additive where possible (new optional fields) so apps can upgrade independently.
 

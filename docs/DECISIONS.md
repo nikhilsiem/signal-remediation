@@ -6,10 +6,19 @@ Every judgment call made while building, so nothing gets silently assumed into s
 
 - **Six repos instead of one monorepo.** This was the owner's decision on 2026-09-28. PLAN.md argues for a monorepo, and the owner chose the split knowingly. The layout is `signal-remediation` (docs), `signal-core` (shared code), and `signal-api`, `signal-worker`, `signal-dashboard`, `signal-mobile`. See REPOS.md.
 - **Shared code is one package, `@signal/core`, with subpath exports** (`/shared`, `/db`, `/agent`, …). It is not six separate packages. The reason: pnpm `workspace:` links between sibling packages don't survive being installed from a git URL, and one package with subpaths sidesteps that entirely.
-- **Consumed as a pinned git-tag dependency** (`github:nikhilsiem/signal-core#vX.Y.Z`). This needs no registry and no publish tokens. The trade-off is that installs need GitHub access to a private repo, which is the same access a developer already has.
+- **Consumed as a pinned git dependency** (`github:nikhilsiem/signal-core#<commit-sha>`). Pins are exact commits because tag pushes are blocked from the build environment. A commit is just as immutable as a tag, and you can add tags from GitHub Releases for readability. This needs no registry and no publish tokens. The trade-off is that installs need GitHub access to a private repo, which is the same access a developer already has.
 - **`@prisma/client` is an optional peer dependency** of core, so the dashboard and mobile app, which only use `/shared`, don't install Prisma. The Prisma schema and migrations live in core; the api and worker run `prisma generate` against it.
 - **Core ships TypeScript source** (no build step). The api and worker run it with `tsx`, the dashboard uses Next's `transpilePackages`, and mobile relies on Metro's TS transform. If any consumer struggles with that, add a `tsc` build to core. That's a contained change.
 - **All repos are private** until the trusted-contact walkthrough.
+
+## App scaffolds
+
+- **API framework: Fastify 5.** Its content-type parsers make it easy to keep the exact raw bytes for Sentry and Slack signature checks. `request.rawBody` holds them, and a test shows re-serialized JSON differs.
+- **BullMQ pinned to 5.x** (6.x is a new major). Queue names, job schemas and idempotent job ids live in `@signal/core/shared`. BullMQ rejects `:` in custom job ids, so the ids use `.`.
+- **Execute queue concurrency is 1**, so only one remediation runs at a time across the system.
+- **Invalid job data is `UnrecoverableError`** (no retries): it can only come from a bug or tampering.
+- **Dashboard: Next.js 16, app router.** The API token is server-side only (`SIGNAL_API_TOKEN`, no `NEXT_PUBLIC_`), and pages call the API from server components. I verified the token doesn't appear in the rendered HTML. Google Fonts were removed so builds work offline.
+- **Mobile: Expo SDK 57** with pnpm isolated installs (supported from SDK 54). Metro resolves `@signal/core/shared` subpath exports with TS source, verified with `expo export`. The template's Expo MIT license file was removed because this is a private repo.
 
 ## Workspace (Phase 0)
 
