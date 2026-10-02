@@ -1,0 +1,30 @@
+{
+  "targets": [
+    {
+      "id": "zoo-shop",
+      "actions": ["cloudrun.rollback", "cloudrun.restart"],
+      "cloudRun": {
+        "project": "fixproof-zoo-sandbox",
+        "region": "us-central1",
+        "service": "zoo-shop",
+        "canary": { "steps": [5, 25], "soakSeconds": 300, "maxSoakMinutes": 15, "minRequests": 20 }
+      }
+    },
+    { "id": "zoo-cache", "actions": ["cache.invalidate"], "cache": { "keys": ["pricing:v1:*"] } },
+    {
+      "id": "zoo-repo",
+      "actions": ["github.fix_pr"],
+      "github": {
+        "owner": "nikhilsiem",
+        "repo": "fixproof-zoo",
+        "baseBranch": "main",
+        "allowedPaths": ["app/src/"],
+        "checks": [["pnpm", "install", "--frozen-lockfile"], ["pnpm", "lint"], ["pnpm", "test"]],
+        "requireTest": true,
+        "revertFirst": { "windowHours": 72 },
+        "repoTools": true,
+        "reproduce": { "command": ["pnpm", "vitest", "run", "{testFiles}"], "expectFailureMatching": "TypeError|RangeError" }
+      }
+    }
+  ]
+}

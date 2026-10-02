@@ -1,0 +1,6 @@
+node_modules
+.keys/
+results/
+.env*
+.tmp/
+*.log

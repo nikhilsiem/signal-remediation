@@ -1,0 +1,7 @@
+export function orderTotal(items: { qty: number; price: number }[], discountPct: number): number {
+  const factor = Math.max(0, 1 - discountPct / 100);
+  const sum = items.reduce((acc, i) => acc + i.qty * i.price, 0);
+  const total = Math.round(sum * factor * 100) / 100;
+  if (!Number.isFinite(total)) throw new RangeError(`invalid order total ${total}`);
+  return total;
+}

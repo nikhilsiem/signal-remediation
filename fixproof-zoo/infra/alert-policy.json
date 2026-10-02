@@ -1,0 +1,17 @@
+{
+  "displayName": "zoo-shop 5xx ratio",
+  "combiner": "OR",
+  "conditions": [{
+    "displayName": "5xx ratio above 5% for 2 minutes",
+    "conditionThreshold": {
+      "filter": "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"zoo-shop\" AND metric.type = \"run.googleapis.com/request_count\" AND metric.labels.response_code_class = \"5xx\"",
+      "denominatorFilter": "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"zoo-shop\" AND metric.type = \"run.googleapis.com/request_count\"",
+      "aggregations": [{"alignmentPeriod": "60s", "perSeriesAligner": "ALIGN_RATE", "crossSeriesReducer": "REDUCE_SUM"}],
+      "denominatorAggregations": [{"alignmentPeriod": "60s", "perSeriesAligner": "ALIGN_RATE", "crossSeriesReducer": "REDUCE_SUM"}],
+      "comparison": "COMPARISON_GT",
+      "thresholdValue": 0.05,
+      "duration": "120s"
+    }
+  }],
+  "notificationChannels": ["__CHANNEL__"]
+}

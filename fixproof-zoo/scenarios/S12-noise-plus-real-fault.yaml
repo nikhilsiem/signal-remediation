@@ -1,0 +1,20 @@
+id: S12
+name: Noise plus a real fault
+kind: positive
+requires:
+  noDeployWithinMinutes: 60
+trigger:
+  - admin: POST /admin/faults/noise
+    body: { on: true }
+  - admin: POST /admin/cache/poison
+    body: { key: "pricing:v1:catalog" }
+load:
+  mix: { "/api/products": 0.6, "/api/orders/u-101": 0.3, "/api/checkout": 0.1 }
+truth:
+  rootCause: "Poisoned pricing cache hidden under noise"
+  component: cache
+  diagnosisChecklist: ["ignores the deprecation noise", "names the pricing cache"]
+  expectedAction: cache.invalidate
+  acceptableActions: ["cache.invalidate"]
+  expectedTier: ["PROPOSE_APPROVE", "AUTO_EXECUTE"]
+  expectedVerification: success

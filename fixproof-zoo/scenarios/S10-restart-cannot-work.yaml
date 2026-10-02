@@ -1,0 +1,16 @@
+id: S10
+name: Restart that cannot work
+kind: negative
+requires:
+  noDeployWithinMinutes: 60
+trigger:
+  - admin: POST /admin/faults/shared_wedge
+    body: { on: true }
+truth:
+  rootCause: "Wedge is stored outside the process; a restart cannot clear it"
+  component: process
+  diagnosisChecklist: ["says a restart will not help"]
+  expectedAction: none
+  acceptableActions: ["none", "cloudrun.restart"]
+  expectedTier: ["PROPOSE_APPROVE", "AUTO_EXECUTE", "DIAGNOSE_ONLY"]
+  expectedVerification: ["failure", "none"]

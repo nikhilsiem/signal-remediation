@@ -1,0 +1,18 @@
+id: S03
+name: Poisoned cache
+kind: positive
+requires:
+  noDeployWithinMinutes: 60
+trigger:
+  - admin: POST /admin/cache/poison
+    body: { key: "pricing:v1:catalog" }
+load:
+  mix: { "/api/products": 0.6, "/api/orders/u-101": 0.3, "/api/checkout": 0.1 }
+truth:
+  rootCause: "Invalid cached value at pricing:v1:catalog fails schema validation"
+  component: cache
+  diagnosisChecklist: ["names the cache key or the pricing cache", "says the code and the deploy are not the cause"]
+  expectedAction: cache.invalidate
+  acceptableActions: ["cache.invalidate"]
+  expectedTier: ["PROPOSE_APPROVE", "AUTO_EXECUTE"]
+  expectedVerification: success

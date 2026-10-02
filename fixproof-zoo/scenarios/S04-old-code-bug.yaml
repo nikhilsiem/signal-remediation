@@ -1,0 +1,18 @@
+id: S04
+name: Old code bug
+kind: positive
+requires:
+  noDeployWithinMinutes: 60
+trigger:
+  - admin: GET /admin/faults
+load:
+  mix: { "/api/products": 0.4, "/api/orders/u-101": 0.2, "/api/orders/u-204": 0.4 }
+truth:
+  rootCause: "Orders with a null address throw in summary.ts"
+  component: code
+  diagnosisChecklist: ["names summary.ts and the null address"]
+  expectedAction: github.fix_pr
+  acceptableActions: ["github.fix_pr"]
+  expectedTier: ["PROPOSE_APPROVE"]
+  expectedVerification: success
+  fixPr: true

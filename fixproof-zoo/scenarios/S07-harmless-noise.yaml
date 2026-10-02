@@ -1,0 +1,15 @@
+id: S07
+name: Harmless noise
+kind: negative
+trigger:
+  - admin: POST /admin/faults/noise
+    body: { on: true }
+load:
+  mix: { "/api/products": 0.5, "/api/orders/u-101": 0.3, "/wp-login.php": 0.2 }
+truth:
+  rootCause: "Deprecation warnings only; no user impact"
+  diagnosisChecklist: ["calls it noise"]
+  expectedAction: none
+  acceptableActions: ["none"]
+  expectedTier: ["NONE", "DIAGNOSE_ONLY"]
+  expectedVerification: none

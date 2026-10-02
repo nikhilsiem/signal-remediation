@@ -1,0 +1,12 @@
+diff --git a/app/src/orders/summary.ts b/app/src/orders/summary.ts
+index 1be5e1c..235e05e 100644
+--- a/app/src/orders/summary.ts
++++ b/app/src/orders/summary.ts
+@@ -7,6 +7,6 @@ export function getOrderSummary(userId: string) {
+     userId,
+     lines: order.items.length,
+     total: orderTotal(order.items, order.discountPct),
+-    shipTo: order.address.postcode,
++    shipTo: order.address?.postcode ?? "",
+   };
+ }

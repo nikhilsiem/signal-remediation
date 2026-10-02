@@ -1,0 +1,4 @@
+{"id":"inc_3","service":"zoo-shop","createdAt":"2026-10-02T10:02:00Z","level":"act","tier":"PROPOSE_APPROVE","status":"verified",
+ "diagnosis":{"component":"code","summary":"summary.ts reads postcode of null address"},
+ "action":{"id":"github.fix_pr","status":"executed"},"verification":{"status":"success"},
+ "pr":{"url":"https://example.com/pr/1","branch":"fix/s04","draft":true,"files":["app/src/orders/summary.ts","app/src/orders/summary.test.ts"],"ciStatus":"success"}}

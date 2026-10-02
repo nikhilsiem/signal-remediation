@@ -1,0 +1,6 @@
+{
+  "name": "@zoo/harness",
+  "private": true,
+  "type": "module",
+  "dependencies": { "yaml": "^2.7.0", "zod": "^3.24.1" }
+}

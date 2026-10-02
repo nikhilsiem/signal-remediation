@@ -1,0 +1,16 @@
+id: S06
+name: Dependency outage
+kind: negative
+trigger:
+  - admin: POST /admin/faults/upstream_hang
+    body: { on: true }
+load:
+  mix: { "/api/products": 0.3, "/api/checkout": 0.7 }
+truth:
+  rootCause: "Payment upstream hangs"
+  component: upstream
+  diagnosisChecklist: ["names the payment upstream"]
+  expectedAction: none
+  acceptableActions: ["none"]
+  expectedTier: ["DIAGNOSE_ONLY"]
+  expectedVerification: none

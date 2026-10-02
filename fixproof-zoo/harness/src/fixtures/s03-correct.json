@@ -1,0 +1,3 @@
+{"id":"inc_1","service":"zoo-shop","createdAt":"2026-10-02T10:01:00Z","level":"act","tier":"PROPOSE_APPROVE","status":"verified",
+ "diagnosis":{"component":"cache","summary":"pricing:v1:catalog failed schema validation; not a code or deploy issue"},
+ "action":{"id":"cache.invalidate","status":"executed"},"verification":{"status":"success"},"pr":null}

@@ -1,0 +1,15 @@
+id: S02
+name: Wedged process
+kind: positive
+requires:
+  noDeployWithinMinutes: 60
+trigger:
+  - admin: POST /admin/poison
+truth:
+  rootCause: "Worker wedged in memory of the only instance"
+  component: process
+  diagnosisChecklist: ["says code and deploy are not the cause"]
+  expectedAction: cloudrun.restart
+  acceptableActions: ["cloudrun.restart"]
+  expectedTier: ["PROPOSE_APPROVE", "AUTO_EXECUTE"]
+  expectedVerification: success

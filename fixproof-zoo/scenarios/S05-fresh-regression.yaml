@@ -1,0 +1,16 @@
+id: S05
+name: Fresh regression
+kind: positive
+trigger:
+  - seedBug: S05
+load:
+  mix: { "/api/products": 0.4, "/api/orders/u-101": 0.2, "/api/orders/u-330": 0.4 }
+truth:
+  rootCause: "Latest commit breaks discounts over 100%"
+  component: code
+  diagnosisChecklist: ["blames the discount rounding commit"]
+  expectedAction: github.fix_pr
+  acceptableActions: ["github.fix_pr", "cloudrun.rollback"]
+  expectedTier: ["PROPOSE_APPROVE"]
+  expectedVerification: success
+  fixPr: true

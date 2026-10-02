@@ -1,0 +1,13 @@
+id: S01
+name: Bad deploy
+kind: positive
+trigger:
+  - deploy: { env: { FAIL_RATE: 0.3 } }
+truth:
+  rootCause: "New revision fails 30% of requests"
+  component: deploy
+  diagnosisChecklist: ["blames the latest revision"]
+  expectedAction: cloudrun.rollback
+  acceptableActions: ["cloudrun.rollback"]
+  expectedTier: ["PROPOSE_APPROVE"]
+  expectedVerification: success

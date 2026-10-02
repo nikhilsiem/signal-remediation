@@ -1,0 +1,13 @@
+id: S08
+name: Flapping
+kind: negative
+trigger:
+  - admin: POST /admin/faults/flap
+    body: { on: true }
+truth:
+  rootCause: "Intermittent failures on a wall-clock cycle"
+  diagnosisChecklist: ["describes the flapping pattern"]
+  expectedAction: none
+  acceptableActions: ["none", "cloudrun.rollback", "cloudrun.restart", "cache.invalidate", "github.fix_pr"]
+  expectedTier: ["PROPOSE_APPROVE", "DIAGNOSE_ONLY", "NONE"]
+  expectedVerification: ["none", "failure"]

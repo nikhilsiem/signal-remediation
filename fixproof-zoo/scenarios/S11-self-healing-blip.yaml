@@ -1,0 +1,13 @@
+id: S11
+name: Self-healing blip
+kind: negative
+trigger:
+  - admin: POST /admin/faults/blip
+    body: { on: true }
+truth:
+  rootCause: "Short blip that heals by itself"
+  diagnosisChecklist: ["notes the errors stopped on their own"]
+  expectedAction: none
+  acceptableActions: ["none"]
+  expectedTier: ["DIAGNOSE_ONLY", "NONE"]
+  expectedVerification: none
